@@ -6,7 +6,7 @@ import { Vector3 } from '../math/Vector3';
  * @author alteredq / http://alteredqualia.com/
  */
 
-function Face3( a, b, c, normal, color, materialIndex ) {
+function Face3( a, b, c, normal, color, materialIndex, hardfaceNumber ) {
 
 	this.a = a;
 	this.b = b;
@@ -19,6 +19,8 @@ function Face3( a, b, c, normal, color, materialIndex ) {
 	this.vertexColors = Array.isArray( color ) ? color : [];
 
 	this.materialIndex = materialIndex !== undefined ? materialIndex : 0;
+	
+	this.hardfaceNumber = hardfaceNumber !== undefined ? hardfaceNumber : 0;
 
 }
 
