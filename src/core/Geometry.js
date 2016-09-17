@@ -275,7 +275,7 @@ Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 			var vertexNormals = normals !== undefined ? [ tempNormals[ a ].clone(), tempNormals[ b ].clone(), tempNormals[ c ].clone() ] : [];
 			var vertexColors = colors !== undefined ? [ scope.colors[ a ].clone(), scope.colors[ b ].clone(), scope.colors[ c ].clone() ] : [];
 
-			var face = new Face3( a, b, c, vertexNormals, vertexColors, materialIndex );
+			var face = new Face3( a, b, c, vertexNormals, vertexColors, materialIndex, hardfaceNumber );
 
 			scope.faces.push( face );
 
@@ -305,10 +305,13 @@ Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 
 					var start = group.start;
 					var count = group.count;
-
+                                        var p = 0;
+                                        
 					for ( var j = start, jl = start + count; j < jl; j += 3 ) {
-
-						addFace( indices[ j ], indices[ j + 1 ], indices[ j + 2 ], group.materialIndex  );
+                                              
+                                                    if( j !== 0 && (j % 2)  === 0) p++;
+                                                
+						addFace( indices[ j ], indices[ j + 1 ], indices[ j + 2 ], group.materialIndex, p  );
 
 					}
 
@@ -316,11 +319,18 @@ Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 
 			} else {
 
+			        var p = 0;
+			
 				for ( var i = 0; i < indices.length; i += 3 ) {
-
-					addFace( indices[ i ], indices[ i + 1 ], indices[ i + 2 ] );
+                                   
+                                       if( i !== 0 && (i % 2)  === 0) p++;
+                                   
+                                   addFace( indices[ i ], indices[ i + 1 ], indices[ i + 2 ], p );
+                                   
+                                  
 
 				}
+			    
 
 			}
 
