@@ -37,12 +37,14 @@ function BoxBufferGeometry( width, height, depth, widthSegments, heightSegments,
 	var vertices = new Float32Array( vertexCount * 3 );
 	var normals = new Float32Array( vertexCount * 3 );
 	var uvs = new Float32Array( vertexCount * 2 );
+	var hardlines = new ( indexCount > 65535 ? Uint32Array : Uint16Array )( indexCount / 3 );
 
 	// offset variables
 	var vertexBufferOffset = 0;
 	var uvBufferOffset = 0;
 	var indexBufferOffset = 0;
 	var numberOfVertices = 0;
+	var hardlineOffset = 0;
 
 	// group variables
 	var groupStart = 0;
@@ -60,6 +62,7 @@ function BoxBufferGeometry( width, height, depth, widthSegments, heightSegments,
 	this.addAttribute( 'position', new BufferAttribute( vertices, 3 ) );
 	this.addAttribute( 'normal', new BufferAttribute( normals, 3 ) );
 	this.addAttribute( 'uv', new BufferAttribute( uvs, 2 ) );
+	this.addAttribute( 'hardline', new BufferAttribute( hardlines, 1 ) );
 
 	// helper functions
 
@@ -167,14 +170,19 @@ function BoxBufferGeometry( width, height, depth, widthSegments, heightSegments,
 				indices[ indexBufferOffset ] = a;
 				indices[ indexBufferOffset + 1 ] = b;
 				indices[ indexBufferOffset + 2 ] = d;
+				
+				hardlineIndex[ hardlineOffset ] = (iy * gridX1) + ix;
 
 				// face two
 				indices[ indexBufferOffset + 3 ] = b;
 				indices[ indexBufferOffset + 4 ] = c;
 				indices[ indexBufferOffset + 5 ] = d;
+				
+				hardlineIndex[ hardlineOffset + 1 ] = (iy  * gridX1) + ix;
 
 				// update offsets and counters
 				indexBufferOffset += 6;
+				hardlineOffset += 2;
 				groupCount += 6;
 
 			}
