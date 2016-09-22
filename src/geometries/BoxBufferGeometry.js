@@ -171,14 +171,14 @@ function BoxBufferGeometry( width, height, depth, widthSegments, heightSegments,
 				indices[ indexBufferOffset + 1 ] = b;
 				indices[ indexBufferOffset + 2 ] = d;
 				
-				hardlines[ hardlineOffset ] = (iy * gridX1) + ix;
+				hardlines[ hardlineOffset ] = (indexBufferOffset / 3) + (iy * gridX1) + ix;
 
 				// face two
 				indices[ indexBufferOffset + 3 ] = b;
 				indices[ indexBufferOffset + 4 ] = c;
 				indices[ indexBufferOffset + 5 ] = d;
 				
-				hardlines[ hardlineOffset + 1 ] = (iy  * gridX1) + ix;
+				hardlines[ hardlineOffset + 1 ] = (indexBufferOffset / 3) + (iy  * gridX1) + ix;
 
 				// update offsets and counters
 				indexBufferOffset += 6;
