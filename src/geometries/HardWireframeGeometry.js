@@ -21,6 +21,16 @@ function HardWireframeGeometry( geometry ) {
 		var vertices = geometry.vertices;
 		var faces = geometry.faces;
 		var numEdges = 0;
+		       
+                        var counts = {};
+
+		        for (var i = 0; i < faces.length; i++){  
+		        	
+		        	var num = faces[ i ].hardlineIndex;
+		        	counts[num] = counts[num] ? counts[num]+1 : 1;
+		        }
+		        
+		        console.log(counts);
 
 		// allocate maximal size
 		var edges = new Uint32Array( 6 * faces.length );
