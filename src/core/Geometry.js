@@ -229,6 +229,7 @@ Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 		var attributes = geometry.attributes;
 
 		var positions = attributes.position.array;
+		var hardlines = attributes.hardlines.array;
 		var normals = attributes.normal !== undefined ? attributes.normal.array : undefined;
 		var colors = attributes.color !== undefined ? attributes.color.array : undefined;
 		var uvs = attributes.uv !== undefined ? attributes.uv.array : undefined;
@@ -270,12 +271,12 @@ Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 
 		}
 
-		function addFace( a, b, c, materialIndex ) {
+		function addFace( a, b, c, hardlineIndex, materialIndex ) {
 
 			var vertexNormals = normals !== undefined ? [ tempNormals[ a ].clone(), tempNormals[ b ].clone(), tempNormals[ c ].clone() ] : [];
 			var vertexColors = colors !== undefined ? [ scope.colors[ a ].clone(), scope.colors[ b ].clone(), scope.colors[ c ].clone() ] : [];
 
-			var face = new Face3( a, b, c, vertexNormals, vertexColors, materialIndex, hardfaceNumber );
+			var face = new Face3( a, b, c, vertexNormals, vertexColors, hardlineIndex, materialIndex );
 
 			scope.faces.push( face );
 
@@ -305,31 +306,21 @@ Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 
 					var start = group.start;
 					var count = group.count;
-                                        var p = 0;
                                         
-					for ( var j = start, jl = start + count; j < jl; j += 3 ) {
-                                              
-                                                    if( j !== 0 && (j % 2)  === 0) p++;
+					for ( var j = start, v = 0, jl = start + count; j < jl; j += 3, v++ ) {
                                                 
-						addFace( indices[ j ], indices[ j + 1 ], indices[ j + 2 ], group.materialIndex, p  );
+						addFace( indices[ j ], indices[ j + 1 ], indices[ j + 2 ], hardlines[ v ], group.materialIndex   );
 
 					}
 
 				}
 
 			} else {
-
-			        var p = 0;
 			
-				for ( var i = 0; i < indices.length; i += 3 ) {
+				for ( var i = 0, v = 0; i < indices.length; i += 3, v++ ) {
                                    
-                                       if( i !== 0 && (i % 2)  === 0) p++;
-                                   
-                                   addFace( indices[ i ], indices[ i + 1 ], indices[ i + 2 ], p );
-                                   
-                                  
-
-				}
+                                   addFace( indices[ i ], indices[ i + 1 ], indices[ i + 2 ], hardlines[ v ] );
+                                }
 			    
 
 			}
