@@ -229,6 +229,7 @@ Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 		var attributes = geometry.attributes;
 
 		var positions = attributes.position.array;
+		var hardlines = attributes.hardlines.array;
 		var normals = attributes.normal !== undefined ? attributes.normal.array : undefined;
 		var colors = attributes.color !== undefined ? attributes.color.array : undefined;
 		var uvs = attributes.uv !== undefined ? attributes.uv.array : undefined;
@@ -306,9 +307,9 @@ Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 					var start = group.start;
 					var count = group.count;
 
-					for ( var j = start, jl = start + count; j < jl; j += 3 ) {
+					for ( var j = start, v = 0, jl = start + count; j < jl; j += 3, v++ ) {
 
-						addFace( indices[ j ], indices[ j + 1 ], indices[ j + 2 ], group.materialIndex  );
+						addFace( indices[ j ], indices[ j + 1 ], indices[ j + 2 ], group.materialIndex, hardlines[ v ]  );
 
 					}
 
@@ -316,9 +317,9 @@ Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 
 			} else {
 
-				for ( var i = 0; i < indices.length; i += 3 ) {
+				for ( var i = 0, v = 0; i < indices.length; i += 3, v++ ) {
 
-					addFace( indices[ i ], indices[ i + 1 ], indices[ i + 2 ] );
+					addFace( indices[ i ], indices[ i + 1 ], indices[ i + 2 ], hardlines[ v ] );
 
 				}
 
